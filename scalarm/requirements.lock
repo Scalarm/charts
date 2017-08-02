@@ -1,0 +1,17 @@
+dependencies:
+- condition: ""
+  enabled: false
+  import-values: null
+  name: mongodb
+  repository: https://kubernetes-charts.storage.googleapis.com
+  tags: null
+  version: 0.4.9
+- condition: ""
+  enabled: false
+  import-values: null
+  name: redis
+  repository: https://kubernetes-charts.storage.googleapis.com
+  tags: null
+  version: 0.8.0
+digest: sha256:52034113f4fc21544c713de77442d808e87697e310684e7099b7a1c277995ad2
+generated: 2017-08-02T18:17:35.6294901+02:00

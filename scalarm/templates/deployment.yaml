@@ -1,0 +1,51 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+          - name: EXPERIMENT_MANAGER_PORT
+            value: "{{ .Values.env.expm_port }}"
+          - name: RAILS_ENV
+            value: "{{ .Values.env.rails_env }}"
+          - name: SECRET_KEY_BASE
+            value: "{{ .Values.env.secret_key_base }}"
+          - name: INFORMATION_SERVICE_URL
+            value: "{{ .Values.env.inf_svc_url}}"
+          - name: INFORMATION_SERVICE_LOGIN
+            value: "{{ .Values.env.inf_svc_login}}"
+          - name: INFORMATION_SERVICE_PASSWORD
+            value: "{{ .Values.env.inf_svc_pass}}"
+          - name: SIDEKIQ_USERNAME
+            value: "{{ .Values.env.skq_login}}"
+          - name: SIDEKIQ_PASSWORD
+            value: "{{ .Values.env.skq_pass}}"
+          - name: REDIS_HOST
+            value: "{{ .Release.Name}}-{{ .Values.env.redis_host}}"
+          - name: REDIS_PORT
+            value: "{{ .Values.env.redis_port}}"
+          - name: MONGO_ADDRESS
+            value: "{{ .Release.Name}}-{{ .Values.env.mongo_host}}:{{ .Values.env.mongo_port}}"
+          - name: MONGO_DB_NAME
+            value: "{{ .Values.env.mongodb_name}}"
+        command:
+          - "sh"
+          - "-c"
+          - >
+           /bin/bash -c 'source /usr/local/rvm/scripts/rvm && rake service:start && tail -f log/${RAILS_ENV}.log'
+        ports:
+        - containerPort: {{ .Values.service.internalPort }}
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
