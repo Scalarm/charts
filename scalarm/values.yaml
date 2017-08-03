@@ -15,9 +15,11 @@ env:
   expm_port: 3000
   rails_env: production
   secret_key_base: alamakota
+  # information service url - for example: kubectl exec -it scalarm_pod_name bash -> curl -k https://localhost:3000/information/experiment_managers
   inf_svc_url: localhost:3000/information
   inf_svc_login: scalarm
   inf_svc_pass: scalarm1024
+  # sidekiq login and password (https://github.com/mperham/sidekiq)
   skq_login: scalarm
   skq_pass: scalarm1024
   redis_host: redis
