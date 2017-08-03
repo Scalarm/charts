@@ -13,6 +13,7 @@ service:
   internalPort: 3000
 env:
   expm_port: 3000
+  # rails environment(production/development/test and so on)that Rails will run under
   rails_env: production
   secret_key_base: alamakota
   # information service url - for example: kubectl exec -it scalarm_pod_name bash -> curl -k https://localhost:3000/information/experiment_managers
