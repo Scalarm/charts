@@ -44,13 +44,18 @@ spec:
           - "sh"
           - "-c"
           - >
-           /bin/bash -c 'source /usr/local/rvm/scripts/rvm && rake service:start && tail -f log/${RAILS_ENV}.log' ;
+            /bin/bash -c 'source /usr/local/rvm/scripts/rvm && rake service:start && tail -f log/${RAILS_ENV}.log'
+        lifecycle:
+          postStart:
+            exec:
+             command:
+                - "/usr/bin/bash"
+                - "-c"
+                - >
+                  source /usr/local/rvm/scripts/rvm && rails r "u = ScalarmUser.new(login: '"{{ .Values.env.user_login}}"'); u.password = '"{{ .Values.env.user_pass}}"'; u.save"				
         readinessProbe:
           tcpSocket:
             port: {{ .Values.service.internalPort }}
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          timeoutSeconds: 10
         ports:
         - containerPort: {{ .Values.service.internalPort }}
         resources:

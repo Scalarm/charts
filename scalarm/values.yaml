@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: scalarm/experiment-manager
-  tag: 1.0.1
+  tag: 1.0.2
   pullPolicy: IfNotPresent
 service:
   name: scalarm-svc
@@ -28,6 +28,9 @@ env:
   mongo_host: mongodb
   mongo_port: 27017
   mongodb_name: mongodb
+  #login and password for scalarm user
+  user_login: scalarm
+  user_pass: scalarm
 resources:
 
 
