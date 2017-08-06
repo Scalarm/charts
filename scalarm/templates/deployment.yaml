@@ -15,6 +15,27 @@ spec:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        volumeMounts:
+          - mountPath: /scalarm/config/puma.rb
+            subPath: puma.rb
+            name: conf
+            readOnly: true 
+          - mountPath: /scalarm/config/secrets.yml
+            subPath: secrets.yml
+            name: conf
+            readOnly: true    
+          - mountPath: /scalarm/config/mongoid.yml
+            subPath: mongoid.yml
+            name: conf
+            readOnly: true    	
+          - mountPath: /scalarm/config/server.crt
+            subPath: server.crt
+            name: certs
+            readOnly: true   
+          - mountPath: /scalarm/config/server.key
+            subPath: server.key
+            name: certs
+            readOnly: true   			
         env:
           - name: EXPERIMENT_MANAGER_PORT
             value: "{{ .Values.env.expm_port }}"
@@ -60,3 +81,10 @@ spec:
         - containerPort: {{ .Values.service.internalPort }}
         resources:
 {{ toYaml .Values.resources | indent 12 }}
+      volumes:
+      - name: conf
+        configMap:
+          name: config
+      - name: certs
+        configMap:
+          name: certs

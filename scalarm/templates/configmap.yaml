@@ -1,0 +1,28 @@
+apiVersion: v1
+data:
+  mongoid.yml: "default: &DEFAULT\r\n  clients:\r\n    default:\r\n      database:
+    \"<%= ENV['MONGO_DB_NAME'] %>\"\r\n      hosts:\r\n        - \"<%= ENV['MONGO_ADDRESS']
+    %>\"\r\n\r\nproduction:\r\n  <<: *DEFAULT\r\n\r\ndevelopment:\r\n  <<: *DEFAULT\r\n"
+  puma.rb: "environment ENV['RAILS_ENV'] or 'development'\r\ndaemonize\r\nbind 'ssl://0.0.0.0:'
+    + ENV['EXPERIMENT_MANAGER_PORT'] + '?key=./config/server.key&cert=./config/server.crt'\r\nstdout_redirect
+    'log/puma.log', 'log/puma.log.err', true\r\npidfile 'puma.pid'\r\nthreads 0,16\r\nworkers
+    1\r\n"
+  secrets.yml: "default: &DEFAULT\r\n  secret_key_base: \"<%= ENV[\"SECRET_KEY_BASE\"]
+    %>\"\r\n\r\n  information_service_url: \"<%= ENV[\"INFORMATION_SERVICE_URL\"]
+    %>\"\r\n  information_service_user: \"<%= ENV[\"INFORMATION_SERVICE_LOGIN\"] %>\"\r\n
+    \ information_service_pass: \"<%= ENV[\"INFORMATION_SERVICE_PASSWORD\"] %>\"\r\n
+    \ \r\n  redis_port: \"<%= ENV[\"REDIS_PORT\"] %>\"\r\n  redis_url: \"<%= 'redis://'
+    + ENV[\"REDIS_HOST\"] + ':' + ENV[\"REDIS_PORT\"] %>\"\r\n  redis_workers: 1\r\n
+    \ \r\n  sidekiq_username: \"<%= ENV[\"SIDEKIQ_USERNAME\"] %>\"\r\n  sidekiq_password:
+    \"<%= ENV[\"SIDEKIQ_PASSWORD\"] %>\"\r\n\r\n  database:\r\n    host: \"<%= ENV['MONGO_ADDRESS']
+    %>\"\r\n    db_name: \"<%= ENV['MONGO_DB_NAME'] %>\"\r\n    binaries_collection_name:
+    'simulation_files'\r\n    pool_size: 2\r\n\r\ndevelopment:\r\n  <<: *DEFAULT\r\n\r\nproduction:\r\n
+    \ <<: *DEFAULT\r\n"
+kind: ConfigMap
+metadata:
+  creationTimestamp: 2017-08-06T18:31:31Z
+  name: config
+  namespace: default
+  resourceVersion: "49358"
+  selfLink: /api/v1/namespaces/default/configmaps/config
+  uid: 77a7a069-7ad5-11e7-b2f2-080027144e30
